@@ -30,6 +30,20 @@ public extension EKAttributes {
          In case the app is already displaying a status bar, keep its appearance */
         case inferred
         
+        /**
+         Ignore the status bar appearance - Previous state is not retained and
+         reassigned after the entry disappears. This might be useful in case a
+         transition between view controllers with different status bars is
+         possible while the entry is being displayed. In that case, if the value is *ignored*,
+         when the entry disappears, the appearance of the status bar won't be reassigned
+         to the old value - since it could be different.
+         */
+        case ignored
+        
+        var shouldBeIgnored: Bool {
+            return self == .ignored
+        }
+        
         /** Returns the status bar appearance.
          Note: See *Appearance* */
         public var appearance: Appearance {
@@ -38,7 +52,7 @@ public extension EKAttributes {
                 return (true, .default)
             case .light:
                 return (true, .lightContent)
-            case .inferred:
+            case .inferred, .ignored:
                 return StatusBar.currentAppearance
             case .hidden:
                 return (false, StatusBar.currentStyle)

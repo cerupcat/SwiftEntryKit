@@ -24,7 +24,7 @@ class EKRootViewController: UIViewController {
     private let backgroundView = EKBackgroundView()
 
     // Previous status bar style
-    private let previousStatusBar: EKAttributes.StatusBar
+    private var previousStatusBar: EKAttributes.StatusBar
     
     private lazy var wrapperView: EKWrapperView = {
         return EKWrapperView()
@@ -32,7 +32,7 @@ class EKRootViewController: UIViewController {
     
     private var statusBar: EKAttributes.StatusBar? = nil {
         didSet {
-            if let statusBar = statusBar {
+            if let statusBar = statusBar, !statusBar.shouldBeIgnored  {
                 UIApplication.shared.set(statusBarStyle: statusBar)
             }
         }
@@ -65,11 +65,27 @@ class EKRootViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return statusBar?.appearance.style ?? previousStatusBar.appearance.style
+        if let statusBar = statusBar {
+            if statusBar.shouldBeIgnored {
+                return EKAttributes.StatusBar.currentStatusBar.appearance.style
+            } else {
+                return statusBar.appearance.style
+            }
+        } else {
+            return previousStatusBar.appearance.style
+        }
     }
 
     override var prefersStatusBarHidden: Bool {
-        return !(statusBar?.appearance.visible ?? previousStatusBar.appearance.visible)
+        if let statusBar = statusBar {
+            if statusBar.shouldBeIgnored {
+                return !EKAttributes.StatusBar.currentStatusBar.appearance.visible
+            } else {
+                return !statusBar.appearance.visible
+            }
+        } else {
+            return !previousStatusBar.appearance.visible
+        }
     }
     
     // MARK: - Lifecycle
@@ -93,7 +109,9 @@ class EKRootViewController: UIViewController {
     
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        statusBar = previousStatusBar
+        if statusBar == nil || !statusBar!.shouldBeIgnored {
+            statusBar = previousStatusBar
+        }
     }
     
     // Set status bar
@@ -115,6 +133,11 @@ class EKRootViewController: UIViewController {
         
         // Assign attributes
         let previousAttributes = lastAttributes
+        
+        // First entry in a row, of which status bar should be ignored
+        if previousAttributes == nil, attributes.statusBar.shouldBeIgnored {
+            previousStatusBar = .ignored
+        }
         
         // Remove the last entry
         removeLastEntry(lastAttributes: previousAttributes, keepWindow: true)

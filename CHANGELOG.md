@@ -1,6 +1,14 @@
 # Change Log
 Any notable changes to this project will be documented in this file.
 
+## 0.8.1
+
+### Issues:
+[StatusBar appareance when moving to another UIViewController #109](https://github.com/huri000/SwiftEntryKit/issues/109).
+
+### Features
+Added a new status bar value `.ignored`. See README.md for more information.
+
 ## 0.8.0
 
 ### Enhancements

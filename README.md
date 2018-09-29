@@ -137,7 +137,7 @@ source 'https://github.com/cocoapods/specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'SwiftEntryKit', '0.8.0'
+pod 'SwiftEntryKit', '0.8.1'
 ```
 
 Then, run the following command:
@@ -160,7 +160,7 @@ $ brew install carthage
 To integrate SwiftEntryKit into your Xcode project using Carthage, specify the following in your `Cartfile`:
 
 ```ogdl
-github "huri000/SwiftEntryKit" == 0.8.0
+github "huri000/SwiftEntryKit" == 0.8.1
 ```
 
 ## Usage
@@ -593,6 +593,13 @@ attributes.statusBar = .hidden
 The status bar appearance is inferred from the previous context (won't be changed):
 ```Swift
 attributes.statusBar = .inferred
+```
+
+The entry ignores the status bar appearance - previous appearance is not retained and reassigned after the entry disappears. 
+This might be useful in case a transition between view controllers with different status bars is possible while the entry is being displayed. 
+In such case, if the value is *ignored*, when the entry disappears, the appearance of the status bar won't be reassigned to the old value - since it could be different.
+```Swift
+attributes.statusBar = .ignored
 ```
 
 In case there is an already presenting entry with lower/equal display priority, the status bar will change it's style
