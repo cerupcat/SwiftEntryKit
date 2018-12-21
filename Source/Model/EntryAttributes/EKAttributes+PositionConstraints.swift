@@ -130,9 +130,6 @@ public extension EKAttributes {
         /** Autorotate the entry along with the device orientation enabled / disabled */
         public var isRotationEnabled = true
         
-        /** Orientations the entry supports when isRotationEnabled is enabled */
-        public var supportedInterfaceOrientations: UIInterfaceOrientationMask?
-        
         /** The entry can be bound to keyboard in case of appearance */
         public var keyboardRelation = KeyboardRelation.unbind
         
