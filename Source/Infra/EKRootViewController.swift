@@ -69,14 +69,6 @@ class EKRootViewController: UIViewController {
     }
     
     override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if lastAttributes == nil {
-            return super.supportedInterfaceOrientations
-        }
-
-        if let orientations = lastAttributes.positionConstraints.supportedInterfaceOrientations {
-            return orientations
-        }
-
         return super.supportedInterfaceOrientations
     }
     
