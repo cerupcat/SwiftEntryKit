@@ -68,6 +68,18 @@ class EKRootViewController: UIViewController {
         return lastAttributes.positionConstraints.isRotationEnabled
     }
     
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if lastAttributes == nil {
+            return super.supportedInterfaceOrientations
+        }
+
+        if let orientations = lastAttributes.positionConstraints.supportedInterfaceOrientations {
+            return orientations
+        }
+
+        return super.supportedInterfaceOrientations
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return statusBar?.appearance.style ?? previousStatusBar.appearance.style
     }
