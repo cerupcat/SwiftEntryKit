@@ -69,7 +69,13 @@ class EKRootViewController: UIViewController {
     }
     
     override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return super.supportedInterfaceOrientations
+        get {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                return .all
+            } else {
+                return [UIInterfaceOrientationMask.portrait, UIInterfaceOrientationMask.portraitUpsideDown]
+            }
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
